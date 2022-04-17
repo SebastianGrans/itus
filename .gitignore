@@ -1,0 +1,6 @@
+/DEVLOG.md
+.vscode/*
+test.py
+venv/
+steps/
+manual.md
