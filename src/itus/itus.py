@@ -227,11 +227,6 @@ def quay_query(
     return departure_data
 
 def main():
-    # process_stop_query("NSR:StopPlace:44085",  num_departures=5, time_range=3600)
-
-    # exit() 
-
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -276,7 +271,7 @@ def main():
         exit()
 
     # Parse the time into seconds.
-    t = datetime.strptime("01:01", "%H:%M")
+    t = datetime.strptime(args.time_range, "%H:%M")
     args.time_range = timedelta(hours=t.hour, minutes=t.minute).seconds
 
     if args.stop:
