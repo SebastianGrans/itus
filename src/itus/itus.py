@@ -109,8 +109,8 @@ def print_quay_table(data):
     platform_name = data[0]['platform_name']
     
     # Example time table line.
-    # +-Gløshaugen---------------------------------------------+
-    # | 3 Hallset via sentrum       c:a 13 min (14:43 / 14:40) |
+    # +-Gløshaugen--------------------------------ETA--PLANNED-+
+    # | 3 Hallset via sentrum         c:a 13 min 14:43 (14:40) |
     
     line_width = (
         2 + max_line_nr_width + 1 + max_line_name_width + 
@@ -118,10 +118,12 @@ def print_quay_table(data):
     )
    
     # The dashes except for beginning +- and ending -+ 
-    header_padding = '-'*(line_width - 4 - len(platform_name))
+    # Subtract 'ETA--PLANNED' (12 chars) from header.
+    header_padding = '-'*(line_width - 4 - len(platform_name) - 12)
     footer_padding = '-'*(line_width - 4)
         
-    header = f"+-{platform_name}{header_padding}-+"
+    header = f"+-{platform_name}{header_padding}ETA--PLANNED-+"
+
     footer = f"+-{footer_padding}-+"
     
     now = datetime.now()
@@ -134,6 +136,7 @@ def print_quay_table(data):
         aimed_str = aimed.strftime("%H:%M")
         dt = int((expected-now).seconds/60)
         minutes = ' '*10
+
         if dt <= 15:
             minutes = f"{dt:2d} min"
             if not el['realtime']:
@@ -145,9 +148,9 @@ def print_quay_table(data):
         string = (
             f"| {el['line_nr']:>{max_line_nr_width}} "
             f"{el['line_name']:{max_line_name_width}}"
-            f"{' '*8}"
+            f"{' '*10}"
             f"{minutes} "
-            f"({expected_str} / {aimed_str}) |"
+            f"{expected_str} ({aimed_str}) |"
         )
         print(string)
     print(footer)
